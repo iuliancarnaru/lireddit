@@ -9,6 +9,7 @@ import {
   Arg,
   Ctx,
   ObjectType,
+  Query,
 } from 'type-graphql';
 
 // using @InputType instead of multiple @Arg
@@ -41,10 +42,20 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { em, req }: MyContext) {
+    if (!req.session.userId) {
+      return null;
+    }
+
+    const user = await em.findOne(User, { id: req.session.userId });
+    return user;
+  }
+
   @Mutation(() => UserResponse)
   async register(
     @Arg('input') input: UsernamePasswordInput,
-    @Ctx() { em }: MyContext
+    @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
     // or we can use a validation library
     if (input.username.length <= 2) {
@@ -90,6 +101,9 @@ export class UserResolver {
         };
       }
     }
+
+    // log you in after registering
+    req.session.userId = user.id;
     return { user };
   }
 
