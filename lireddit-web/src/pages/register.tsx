@@ -1,11 +1,5 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-} from '@chakra-ui/form-control';
-import { Input } from '@chakra-ui/react';
 import Wrapper from '../components/Wrapper';
 import InputField from '../components/InputField';
 
@@ -31,6 +25,7 @@ const Register: React.FC<RegisterProps> = ({}) => {
               name="password"
               label="Password"
               placeholder="password"
+              type='password'
             />
           </Form>
         )}
