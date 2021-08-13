@@ -69,7 +69,7 @@ export class UserResolver {
       };
     }
 
-    if (input.username.length <= 4) {
+    if (input.password.length <= 4) {
       return {
         errors: [
           {
