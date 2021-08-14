@@ -123,6 +123,13 @@ export type RegisterMutation = {
   };
 };
 
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  __typename?: 'Query';
+  me?: Maybe<{ __typename?: 'User'; id: number; username: string }>;
+};
+
 export const LoginDocument = gql`
   mutation Login($loginInput: UsernamePasswordInput!) {
     login(input: $loginInput) {
@@ -160,4 +167,18 @@ export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(
     RegisterDocument
   );
+}
+export const MeDocument = gql`
+  query Me {
+    me {
+      id
+      username
+    }
+  }
+`;
+
+export function useMeQuery(
+  options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}
+) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 }
