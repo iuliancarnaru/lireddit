@@ -11,6 +11,7 @@ import {
   ObjectType,
   Query,
 } from 'type-graphql';
+import { COOKIE_NAME } from '../constants';
 
 // using @InputType instead of multiple @Arg
 @InputType()
@@ -143,5 +144,22 @@ export class UserResolver {
     req.session.userId = user.id;
 
     return { user };
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: MyContext) {
+    return new Promise((resolve) =>
+      // remove session in redis
+      req.session.destroy((err) => {
+        if (err) {
+          console.log(err);
+          resolve(false);
+          return;
+        }
+        // clear cookie
+        res.clearCookie(COOKIE_NAME);
+        resolve(true);
+      })
+    );
   }
 }
