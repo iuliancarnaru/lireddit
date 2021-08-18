@@ -3,12 +3,17 @@ import { Box } from '@chakra-ui/layout';
 import { Button, Flex, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
+import { isServer } from '../utils/isServer';
 
 interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = ({}) => {
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
-  const [{ data, fetching: meFetching }] = useMeQuery();
+  // pause the query to run on server side as NavBar is part of ssr page
+  const [{ data, fetching: meFetching }] = useMeQuery({
+    pause: isServer(),
+  });
+
   let body = null;
 
   if (meFetching) {
