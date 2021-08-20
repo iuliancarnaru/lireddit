@@ -30,6 +30,7 @@
     "@mikro-orm/cli": "^4.5.7",
     "@mikro-orm/core": "^4.5.7",
     "@mikro-orm/postgresql": "^4.5.7",
+    "@types/ioredis": "^4.26.7",
     "apollo-server-express": "^3.1.2",
     "argon2": "^0.28.2",
     "connect-redis": "^6.0.0",
@@ -37,11 +38,12 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "graphql": "^15.5.1",
+    "ioredis": "^4.27.8",
     "nodemailer": "^6.6.3",
     "pg": "^8.7.1",
-    "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^1.1.1"
+    "type-graphql": "^1.1.1",
+    "uuid": "^8.3.2"
   },
   "mikro-orm": {
     "useTsNode": true,
