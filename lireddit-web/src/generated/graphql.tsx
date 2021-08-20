@@ -53,7 +53,8 @@ export type MutationRegisterArgs = {
 
 
 export type MutationLoginArgs = {
-  input: UsernamePasswordInput;
+  password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
 };
 
 export type Post = {
@@ -83,6 +84,7 @@ export type User = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -92,6 +94,7 @@ export type UserResponse = {
 };
 
 export type UsernamePasswordInput = {
+  email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
 };
@@ -99,7 +102,8 @@ export type UsernamePasswordInput = {
 export type RegularUserFragment = { __typename?: 'User', id: number, username: string };
 
 export type LoginMutationVariables = Exact<{
-  loginInput: UsernamePasswordInput;
+  usernameOrEmail: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
@@ -134,8 +138,8 @@ export const RegularUserFragmentDoc = gql`
 }
     `;
 export const LoginDocument = gql`
-    mutation Login($loginInput: UsernamePasswordInput!) {
-  login(input: $loginInput) {
+    mutation Login($usernameOrEmail: String!, $password: String!) {
+  login(usernameOrEmail: $usernameOrEmail, password: $password) {
     errors {
       field
       message
