@@ -1,4 +1,3 @@
-import { EntityManager, IDatabaseDriver, Connection } from '@mikro-orm/core';
 import { Session, SessionData } from 'express-session';
 import { Request, Response } from 'express';
 import { Redis } from 'ioredis';
