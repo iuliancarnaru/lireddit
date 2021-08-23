@@ -60,6 +60,7 @@ export class UserResolver {
     let user;
 
     try {
+      // alternative to `create().save()`
       const result = await getConnection()
         .createQueryBuilder()
         .insert()
@@ -72,7 +73,7 @@ export class UserResolver {
         .returning('*')
         .execute();
 
-      user = result.raw;
+      user = result.raw[0];
     } catch (err) {
       // duplicate user error
       if (err.code === '23505' || err.detail.includes('already exists')) {
