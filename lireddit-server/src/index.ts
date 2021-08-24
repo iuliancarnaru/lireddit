@@ -28,6 +28,7 @@ async function main() {
   });
 
   await (await connection).runMigrations();
+  // await Post.delete({});
 
   const app = express();
 
