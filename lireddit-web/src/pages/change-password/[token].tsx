@@ -22,8 +22,8 @@ export const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
         initialValues={{ newPassword: '' }}
         onSubmit={async (values, { setErrors }) => {
           const response = await changePassword({
-            changePasswordNewPassword: values.newPassword,
-            changePasswordToken: token,
+            newPassword: values.newPassword,
+            token: token,
           });
 
           if (response.data?.changePassword.errors) {
