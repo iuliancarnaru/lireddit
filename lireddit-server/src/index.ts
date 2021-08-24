@@ -13,6 +13,7 @@ import { COOKIE_NAME, __prod__ } from './constants';
 import { createConnection } from 'typeorm';
 import { Post } from './entities/Post';
 import { User } from './entities/User';
+import path from 'path';
 
 async function main() {
   const connection = createConnection({
@@ -22,8 +23,11 @@ async function main() {
     password: 'root',
     logging: true,
     synchronize: true,
+    migrations: [path.join(__dirname, './migrations/*')],
     entities: [Post, User],
   });
+
+  await (await connection).runMigrations();
 
   const app = express();
 
