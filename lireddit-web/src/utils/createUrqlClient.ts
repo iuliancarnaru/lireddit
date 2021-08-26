@@ -47,15 +47,28 @@ export const cursorPagination = (): Resolver<any, any, any> => {
       `${fieldName}(${stringifyVariables(fieldArgs)})`
     );
 
+    let id;
     info.partial = !isItInTheCache;
+    let hasMore = true;
     const results: string[] = [];
+    fieldInfos.forEach((fi) => {
+      const key = cache.resolveFieldByKey(entityKey, fi.fieldKey) as string;
+      const data = cache.resolve(key, 'posts') as string[];
+      const _hasMore = cache.resolve(key, 'hasMore');
+      id = cache.resolve(key, 'id');
 
-    fieldInfos.forEach((field) => {
-      const data = cache.resolve(entityKey, field.fieldKey) as string[];
+      if (!_hasMore) {
+        hasMore = _hasMore as boolean;
+      }
       results.push(...data);
     });
 
-    return results;
+    return {
+      id,
+      __typename: 'PaginatedPosts',
+      hasMore,
+      posts: results,
+    };
   };
 };
 
