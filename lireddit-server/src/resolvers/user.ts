@@ -9,6 +9,7 @@ import {
   Ctx,
   ObjectType,
   Query,
+  Root,
 } from 'type-graphql';
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from '../constants';
 import { UsernamePasswordInput } from './UsernamePasswordInput';
@@ -16,6 +17,7 @@ import { validateRegister } from '../utils/validateRegister';
 import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
 import { getConnection } from 'typeorm';
+import { FieldResolver } from 'type-graphql';
 
 @ObjectType()
 class FieldError {
@@ -35,8 +37,18 @@ class UserResponse {
   user?: User;
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+  @FieldResolver(() => String)
+  email(@Root() user: User, @Ctx() { req }: MyContext) {
+    // this is current user and it's ok to show them email
+    if (req.session.userId === user.id) {
+      return user.email;
+    }
+
+    return '';
+  }
+
   @Query(() => User, { nullable: true })
   me(@Ctx() { req }: MyContext) {
     if (!req.session.userId) {
