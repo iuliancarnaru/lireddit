@@ -1,13 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Post } from './Post';
 import { User } from './User';
 
 // m to n
@@ -20,18 +13,22 @@ import { User } from './User';
 @Entity()
 export class Updoot extends BaseEntity {
   @Field()
-  @Column()
-  userId: number;
+  @Column({ type: 'int' })
+  value: number;
 
   @Field()
+  @PrimaryColumn()
+  userId: number;
+
+  @Field(() => User)
   @ManyToOne(() => User, (user) => user.updoots)
   user: User;
 
   @Field()
-  @Column()
+  @PrimaryColumn()
   postId: number;
 
-  @Field()
+  @Field(() => Post)
   @ManyToOne(() => User, (posts) => posts.updoots)
-  post: User;
+  post: Post;
 }
